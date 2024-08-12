@@ -1,0 +1,100 @@
+﻿@model List<ResultSliderDto>
+
+@{
+    ViewData["Title"] = "SliderList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+@{
+    string color = "";
+}
+@{
+    string status = "";
+}
+@{
+    string headingColor = "";
+}
+
+<div class="row">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-header border-0">
+                <h3 class="mb-0">Slider Listesi</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Slider Resim</th>
+                            <th scope="col">Slider Durum</th>
+                            <th scope="col">İşlemler</th>
+                            <th scope="col">Aktif/Pasif</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            count++;
+                            if (item.IsActive == true)
+                            {
+                                status = "Aktif";
+                                color = "badge badge-success px-2";
+                            }
+                            else if (item.IsActive == false)
+                            {
+                                status = "Pasif";
+                                color = "badge badge-warning px-2";
+                            }
+
+                            <tr>
+                                <td>
+                                    @count
+                                </td>
+                                <th scope="row">
+                                    <div class="media align-items-center">
+                                        <a href="#" >
+                                            <img  src="@item.ImageUrl" style="height:150px; width:300px;">
+                                        </a>
+                                    </div>
+                                </th>
+                                <td>
+                                    <span class="@color"> @status</span>
+                                </td>
+                                <td><a href="/Admin/Slider/DeleteSlider/@item.SliderId" class="btn btn-warning">Sil</a>
+                                <a href="/Admin/Slider/UpdateSlider/@item.SliderId" class="btn btn-info">Güncelle</a></td>
+
+                                @if (item.IsActive == true)
+                                {
+                                    <td>
+
+                                        <a class="btn btn-warning btn-sm" href="/Admin/Slider/ChangeToFalseStatus/@item.SliderId">
+                                            <i class="fas fa-check">
+                                            </i>
+                                            Pasif Yap
+                                        </a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a class="btn btn-success btn-sm" href="/Admin/Slider/ChangeToTrueStatus/@item.SliderId">
+                                            <i class="fas fa-check">
+                                            </i>
+                                            Aktif Yap
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <br />
+        <td> <a href="/Admin/Slider/CreateSlider/" class="btn btn-primary">Yeni Görsel Girişi</a></td>
+    </div>
+</div>

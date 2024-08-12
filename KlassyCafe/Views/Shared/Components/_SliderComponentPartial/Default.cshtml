@@ -1,0 +1,32 @@
+﻿@model List<ResultSliderDto>
+<div id="top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="left-content">
+                    <div class="inner-content">
+                        <h4>KlassyCafe</h4>
+                        <h6>Boğaza Karşı Keyif</h6>
+                        <div class="main-white-button scroll-to-section">
+                            <a href="#reservation">Rezervasyon Yap</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="main-banner header-text">
+                    <div class="Modern-Slider">
+                        @foreach(var item in Model)
+                        {
+                            <div class="item">
+                                <div class="img-fill">
+                                    <img src="@item.ImageUrl" alt="">
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

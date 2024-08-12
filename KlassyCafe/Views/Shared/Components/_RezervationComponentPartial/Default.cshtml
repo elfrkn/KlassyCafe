@@ -1,0 +1,163 @@
+﻿
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<section class="section" id="reservation">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center">
+                <div class="left-text-content">
+                    <div class="section-heading">
+                        <h6>İletişim</h6>
+                        <h2>Buradan Rezervasyon Yapabilirsiniz </h2>
+                    </div>
+                    <p>Bizlere telefon veya email yoluyla ulaşabilirsiniz.</p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="phone">
+                                <i class="fa fa-phone"></i>
+                                <h4>Telefon Numaraları</h4>
+                                <span><a href="#">0216-324-44-44</a><br><a href="#">0216-324-44-45</a></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="message">
+                                <i class="fa fa-envelope"></i>
+                                <h4>Mail Adresi</h4>
+                                <span><a href="#">help@fooddelivery.com</a><br><a href="#">info@fooddelivery.com</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6">
+                <div class="contact-form">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4>Rezervasyon Yap</h4>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <fieldset>
+                                <input type="text" name="Name" id="txtname" placeholder="İsminiz" >
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <fieldset>
+                                <input type="text" name="Email" id="txtmail" placeholder="Mail Adresiniz" >
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-6 col-sm-12">
+                                <fieldset>
+                                <input type="text" name="Phone" id="txtphone" placeholder="Telefon Numaranız">
+                                </fieldset>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                            <fieldset>
+                                <select id="txtguest" name="GuestNumber">
+                            <option selected>Kişi Sayısı</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            </select>
+                            </fieldset>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="filterDate2">
+                                    <div class="input-group date" data-date-format="Tarih">
+                                    <input type="text" name="Date" id="txtdate" class="form-control" placeholder="dd/mm/yyyy">
+                                        <div class="input-group-addon">
+                                            <span class="glyphicon glyphicon-th"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                            <fieldset>
+                                <select id="txttime" name="Time">
+                            <option selected>Saat</option>
+                                    <option value="Kahvaltı">Kahvaltı</option>
+                                    <option value="Öğlen">Öğlen</option>
+                                    <option value="Akşam">Akşam</option>
+                            </select>
+                            </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                                <fieldset>
+                                <textarea rows="6" name="Message" id="txtmessage" placeholder="Mesajınız" required=""></textarea>
+                                </fieldset>
+                            </div>
+                            <div class="col-lg-12">
+                                <fieldset>
+                                <button type="button" id="btnSave" class="main-button-icon">Rezervasyon Yap</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+
+
+    $("#btnSave").click(() => {
+        event.preventDefault();
+
+        let name = $("#txtname").val();
+        let mail = $("#txtmail").val();
+        let phone = $("#txtphone").val();
+        let guest = $("#txtguest").val();
+        let date = $("#txtdate").val();
+        let time = $("#txttime").val();
+        let message = $("#txtmessage").val();
+        let values = {
+            Name: name,
+            Email: mail,
+            Phone: phone,
+            GuestNumber: guest,
+            Date: date,
+            Time: time,
+            Message: message,
+        };
+        $.ajax({
+            method: "post",
+            url: "/Default/CreateRezervation",
+            data: values,
+            success: function () {
+                Swal.fire({
+                    title: "Rezervasyonunuz alındı!",
+                    text: "Size en yakın zamanda mail üzerinden dönüş yapılacaktır.",
+                    icon: "success"
+                });
+            },
+            error: function (response) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Alanlar boş geçilemez!",
+                });
+                var errors = response.responseJSON.errors;
+                console.log(errors);
+                var errorMessages = '';
+                $.each(errors, (key, value) => {
+                    errorMessages += '<p>' + value + '</p>';
+                });
+                $("#errorMessage").html(errorMessages);
+            }
+        });
+    });
+
+</script>
+
+

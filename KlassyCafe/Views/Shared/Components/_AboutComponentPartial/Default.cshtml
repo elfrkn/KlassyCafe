@@ -1,0 +1,67 @@
+﻿@model List<ResultAboutDto>
+
+@foreach (var item in Model)
+{
+    <section class="section" id="about">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6 col-xs-12">
+                    <div class="left-text-content">
+                        <div class="section-heading">
+                            <h6>Hakkımızda</h6>
+                            <h2>@item.Title</h2>
+                        </div>
+                        <p>
+                            @item.Description
+                        </p>
+                        <div class="row">
+                            <div class="col-4">
+                                <img src="~/klassy_cafe/assets/images/about-thumb-01.jpg" alt="">
+                            </div>
+                            <div class="col-4">
+                                <img src="~/klassy_cafe/assets/images/about-thumb-02.jpg" alt="">
+                            </div>
+                            <div class="col-4">
+                                <img src="~/klassy_cafe/assets/images/about-thumb-03.jpg" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12">
+                    <div class="right-content">
+                        <div class="thumb">
+                            <a href="#" data-toggle="modal" data-target="#Modal1"><i class="fa fa-play"></i></a>
+                            <img src="~/klassy_cafe/assets/images/about-video-bg.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="Modal1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+
+                    <div class="col-md-5" style="margin-left:10px">
+                        <iframe width="700" height="500" src="@item.VideoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+           
+        </div>
+       
+    </div>
+}
+
+
+
+@* target="popup" onclick="window.open('@item.VideoUrl','popup','width=600,height=400'); return false;"> *@

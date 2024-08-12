@@ -1,0 +1,90 @@
+﻿@model List<ResultTableDto>
+@{
+    Layout = null;
+}
+@{
+    string color = "";
+    string status = "";
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+@await Component.InvokeAsync("_AdminHeadComponentPartial")
+
+<body class="">
+    @await Component.InvokeAsync("_AdminSidebarComponentPartial")
+    <div class="main-content">
+        @await Component.InvokeAsync("_AdminNavbarComponentPartial")
+
+        <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+            <div class="container-fluid">
+
+                <script type="text/javascript">
+                    $(document).ready(() => {
+                        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7159/SignalRHub").build();
+                        $("#connstatus").text(connection.state);
+                        connection.start().then(() => {
+                            $("#connstatus").text(connection.state);
+                            setInterval(() => {
+                                connection.invoke("GetTableStatus");
+                            }, 1000);
+                        }).catch((err) => { console.log(err) });
+
+                        connection.on("TableStatus", (value) => {
+                            console.log(value);
+                            var color = "";
+                            var status = "";
+                            console.log(value);
+                            let tablehtml = `<div class="row">`;
+                            $.each(value, (index, item) => {
+                                if (item.isEmpty == true) {
+                                    color = "card bg-light";
+                                    status = "Masa Dolu";
+                                }
+                                else {
+                                    color = "card bg-success";
+                                    status = "Masa Boş";
+                                }
+                                tablehtml += `<div class="col-md-3">
+                                                  <div class="${color}">
+                                                      <div class="card-body ">
+                                                          <div class="row">
+                                                              <div class="col-5">
+                                                                  <div class="icon-big text-center">
+                                                                    <i class="la la-certificate"></i>
+                                                                   </div>
+                                                               </div>
+                                                       <div class="col-7 d-flex align-items-center">
+                                                         <div class="numbers">
+                                                       <p class="card-category">${item.tableName}</p>
+                                                       <h4 class="card-title">${status}</h4>
+                                                       </div>
+                                                       </div>
+                                                    </div>
+                                                 </div>
+                                               </div>
+                                                                   <br /><br />
+                                            </div>`
+                            });
+                            tablehtml += "</div>";
+                            $("#statuslist").html(tablehtml);
+                        });
+                    });
+
+                </script>
+                
+                <div id="statuslist"></div>
+
+                <script src="~/argon-dashboard-master/assets/js/plugins/chart.js/dist/Chart.min.js"></script>
+                <script src="~/argon-dashboard-master/assets/js/plugins/chart.js/dist/Chart.extension.js"></script>
+                @await Component.InvokeAsync("_AdminScriptComponentPartial")
+</body>
+</html>
+

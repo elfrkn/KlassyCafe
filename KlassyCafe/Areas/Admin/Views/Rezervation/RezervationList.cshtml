@@ -1,0 +1,107 @@
+﻿@model List<ResultRezervationDto>
+@{
+    ViewData["Title"] = "RezervationList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    int count = 0;
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(() => {
+        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:7159/SignalRHub").build();
+        $("#connstatus").text(connection.state);
+        connection.start().then(() => {
+            $("#connstatus").text(connection.state);
+            setInterval(() => {
+                connection.invoke("GetRezervationList");
+            }, 1000);
+        }).catch((err) => { console.log(err) });
+
+        connection.on("RezervationList", (value) => {
+            console.log(value);
+            let tablehtml = `<table class=table align-items-center table-flush><thead=thead-light>
+                                         <tr>
+                                         <th scope="col">#</th>
+                                         <th scope="col">Müşteri Adı</th>
+                                         <th scope="col">Müşteri Mail</th>
+                                         <th scope="col">Müşteri Telefon</th>
+                                         <th scope="col">Kişi Sayısı</th>
+                                         <th scope="col">İptal Et</th>
+                                         <th scope="col">Güncelle</th>
+                                         <th scope="col">Mail Gönder</th>
+                                         </tr>
+                                         </thead>
+                                         <tbody>`
+            $.each(value, (index, item) => {
+                tablehtml += `<tr>
+                                        <th>${index+1}</th>
+                                        <td>${item.name}</td>
+                                        <td>${item.email}</td>
+                                        <td>${item.phone}</td>
+                                        <td>${item.guestNumber}</td>
+                                        <td><a href="/Rezervation/DeleteRezervation/${item.rezervationId}" class="btn btn-outline-danger">İptal Et</a></td>
+                                        <td><a href="/Rezervation/UpdateRezervation/${item.rezervationId}" class="btn btn-outline-info">Güncelle</a></td>
+                                        <td><a href="" data-toggle="modal" data-target="#Modal1" class="btn btn-outline-dark">Mail Gönder</a></td>
+                                        </tr>`
+            });
+            tablehtml += "</tbody></table>";
+            $("#rezervationList").html(tablehtml);
+        });
+    });
+</script>
+
+
+
+<div class="row">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-header border-0">
+                <h3 class="mb-0">Rezervasyon Listesi</h3>
+            </div>
+            <div class="table-responsive">
+                <div id="rezervationList"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="Modal1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Mail Gönder</h2>
+            </div>
+            <form method="post" action="/Admin/Mail/SendMail/">
+
+                <div class="modal-body">
+                    <label>Alıcı Mail Adresi</label>
+                    <input type="text" class="form-control" name="ReceiverMail" />
+                    <br />
+                    <label>Konu</label>
+                    <input type="text" class="form-control" name="Subject" />
+                    <br />
+                    <label>Mesajınız</label>
+                    <textarea class="form-control h-150px" rows="6" id="comment" name="Body"></textarea>
+                    <br />
+                    <button class="btn btn-primary">Maili Gönder</button>
+
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+

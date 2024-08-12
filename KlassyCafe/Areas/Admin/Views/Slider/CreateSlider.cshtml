@@ -1,0 +1,39 @@
+﻿@model CreateSliderDto
+@{
+    ViewData["Title"] = "CreateSlider";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col">
+        <div class="card shadow">
+            <div class="card-header border-0">
+                <h3 class="mb-0">Yeni Slider ekleme</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                    <tbody>
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="container">
+                                <br /><br />
+                                <label>Görsel Url</label>
+                                <input type="text" asp-for="ImageUrl" class="form-control" />
+                                <br />
+                                <label>Görsel Aktif Mi?</label>
+                                <select class="form-control" id="val-skill" asp-for="IsActive">
+                                    <option value="">Seçiniz</option>
+                                    <option value="true">Evet</option>
+                                    <option value="false">Hayır</option>
+                                </select>
+                                <br />
+                                <br />
+                                <button type="submit" class="btn btn-primary">Görseli Ekle</button>
+                                <br /><br />
+                        </form>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
