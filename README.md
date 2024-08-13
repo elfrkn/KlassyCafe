@@ -4,7 +4,7 @@ Bu projede PostgreSql ve SignalR kullanılarak bir rezervasyon sitesi oluşturul
 ## Kullanılan Teknolojiler
 <ul>
  <li> Asp.Net Core 6 </li>
- <li> PstgreSql </li>
+ <li> PostgreSql </li>
  <li> PagedList </li>
  <li> Ajax </li>
  <li> SignalR</li>
