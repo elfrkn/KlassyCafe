@@ -11,6 +11,7 @@ Bu projede PostgreSql ve SignalR kullanılarak bir rezervasyon sitesi oluşturul
  <li> Mailkit </li>
  <li> Automapper </li>
 </ul>
+
  ### Ana Sayfa
  ![Anasayfa](https://github.com/user-attachments/assets/8ba5c07a-301a-473a-988e-4ca5a5812bd1)
 
